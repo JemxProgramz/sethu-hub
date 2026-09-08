@@ -18,15 +18,16 @@ import { ModeratorPage } from './pages/ModeratorPage.js';
 import { AdminPage } from './pages/AdminPage.js';
 import { LoginPage } from './pages/LoginPage.js';
 import { RegisterPage } from './pages/RegisterPage.js';
+import { LandingPage } from './pages/LandingPage.js';
 
 export const App: React.FC = () => {
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/post/:id" element={<PostDetailPage />} />
         <Route path="/create" element={<CreatePostPage />} />
