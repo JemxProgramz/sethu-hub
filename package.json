@@ -1,0 +1,37 @@
+{
+  "name": "sethu-hub",
+  "version": "1.0.0",
+  "description": "Where Sethu Connects - Institutional AI-Powered Social Knowledge Network for Sethu Institute of Technology",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx backend/server.ts",
+    "dev:backend": "tsx watch backend/server.ts",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "seed": "tsx database/seed/seed.ts",
+    "test": "tsx tests/run-all-tests.ts",
+    "test:smoke": "tsx tests/smoke-check.ts",
+    "build:backend": "tsc -p tsconfig.server.json",
+    "build:frontend": "npm run build --prefix frontend",
+    "build": "npm run build:backend && npm run build:frontend"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.13.9",
+    "concurrently": "^9.1.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
