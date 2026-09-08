@@ -172,7 +172,7 @@ communitiesRouter.post('/', requireAuth, async (req: AuthenticatedRequest, res: 
       userId
     ]);
 
-    run('INSERT INTO community_members (community_id, user_id, role) VALUES (?, ?, "moderator")', [commId, userId]);
+    run('INSERT INTO community_members (community_id, user_id, role) VALUES (?, ?, \'moderator\')', [commId, userId]);
   });
 
   res.status(201).json({

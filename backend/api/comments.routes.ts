@@ -32,7 +32,7 @@ commentsRouter.get('/posts/:id/comments', optionalAuth, async (req: Authenticate
   for (const rc of rawComments) {
     let userVote = 0;
     if (currentUserId) {
-      const vote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = "comment" AND target_id = ?', [currentUserId, rc.id]);
+      const vote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = \'comment\' AND target_id = ?', [currentUserId, rc.id]);
       if (vote) userVote = vote.vote_value;
     }
 
@@ -94,7 +94,7 @@ commentsRouter.post('/posts/:id/comments', requireAuth, async (req: Authenticate
       `, [commentId, postId, userId, parentId || null, content.trim()]);
 
       // Automatically add author upvote
-      run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, "comment", ?, 1)', [
+      run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, \'comment\', ?, 1)', [
         `vote-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
         userId,
         commentId
@@ -144,12 +144,12 @@ commentsRouter.post('/comments/:id/vote', requireAuth, async (req: Authenticated
     return res.status(404).json({ success: false, error: { code: 'COMMENT_NOT_FOUND', message: 'Comment not found' } });
   }
 
-  const existingVote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = "comment" AND target_id = ?', [userId, commentId]);
+  const existingVote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = \'comment\' AND target_id = ?', [userId, commentId]);
 
   transaction(() => {
     if (voteValue === 0) {
       if (existingVote) {
-        run('DELETE FROM votes WHERE user_id = ? AND target_type = "comment" AND target_id = ?', [userId, commentId]);
+        run('DELETE FROM votes WHERE user_id = ? AND target_type = \'comment\' AND target_id = ?', [userId, commentId]);
         if (existingVote.vote_value === 1) {
           run('UPDATE comments SET upvotes_count = MAX(0, upvotes_count - 1) WHERE id = ?', [commentId]);
           run('UPDATE users SET reputation = MAX(0, reputation - 5) WHERE id = ?', [comment.author_id]);
@@ -159,7 +159,7 @@ commentsRouter.post('/comments/:id/vote', requireAuth, async (req: Authenticated
       }
     } else {
       if (!existingVote) {
-        run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, "comment", ?, ?)', [
+        run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, \'comment\', ?, ?)', [
           `vote-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
           userId,
           commentId,
@@ -172,7 +172,7 @@ commentsRouter.post('/comments/:id/vote', requireAuth, async (req: Authenticated
           run('UPDATE comments SET downvotes_count = downvotes_count + 1 WHERE id = ?', [commentId]);
         }
       } else if (existingVote.vote_value !== voteValue) {
-        run('UPDATE votes SET vote_value = ? WHERE user_id = ? AND target_type = "comment" AND target_id = ?', [voteValue, userId, commentId]);
+        run('UPDATE votes SET vote_value = ? WHERE user_id = ? AND target_type = \'comment\' AND target_id = ?', [voteValue, userId, commentId]);
         if (voteValue === 1) {
           run('UPDATE comments SET upvotes_count = upvotes_count + 1, downvotes_count = MAX(0, downvotes_count - 1) WHERE id = ?', [commentId]);
         } else {

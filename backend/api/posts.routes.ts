@@ -101,7 +101,7 @@ postsRouter.get('/', optionalAuth, async (req: AuthenticatedRequest, res: Respon
     let isSaved = false;
 
     if (currentUserId) {
-      const vote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = "post" AND target_id = ?', [currentUserId, p.id]);
+      const vote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = \'post\' AND target_id = ?', [currentUserId, p.id]);
       if (vote) userVote = vote.vote_value;
 
       const save = get<any>('SELECT 1 FROM saves WHERE user_id = ? AND post_id = ?', [currentUserId, p.id]);
@@ -243,7 +243,7 @@ postsRouter.get('/:id', optionalAuth, async (req: AuthenticatedRequest, res: Res
   let isSaved = false;
 
   if (currentUserId) {
-    const vote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = "post" AND target_id = ?', [currentUserId, p.id]);
+    const vote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = \'post\' AND target_id = ?', [currentUserId, p.id]);
     if (vote) userVote = vote.vote_value;
 
     const save = get<any>('SELECT 1 FROM saves WHERE user_id = ? AND post_id = ?', [currentUserId, p.id]);
@@ -344,7 +344,7 @@ postsRouter.post('/', requireAuth, validateBody(createPostSchema), async (req: A
       ]);
 
       // Automatically add author upvote
-      run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, "post", ?, 1)', [
+      run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, \'post\', ?, 1)', [
         `vote-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
         userId,
         postId
@@ -451,13 +451,13 @@ postsRouter.post('/:id/vote', requireAuth, validateBody(voteSchema), async (req:
     });
   }
 
-  const existingVote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = "post" AND target_id = ?', [userId, postId]);
+  const existingVote = get<any>('SELECT vote_value FROM votes WHERE user_id = ? AND target_type = \'post\' AND target_id = ?', [userId, postId]);
 
   transaction(() => {
     if (voteValue === 0) {
       // Remove vote
       if (existingVote) {
-        run('DELETE FROM votes WHERE user_id = ? AND target_type = "post" AND target_id = ?', [userId, postId]);
+        run('DELETE FROM votes WHERE user_id = ? AND target_type = \'post\' AND target_id = ?', [userId, postId]);
         if (existingVote.vote_value === 1) {
           run('UPDATE posts SET upvotes_count = MAX(0, upvotes_count - 1) WHERE id = ?', [postId]);
           run('UPDATE users SET reputation = MAX(0, reputation - 10) WHERE id = ?', [post.author_id]);
@@ -468,7 +468,7 @@ postsRouter.post('/:id/vote', requireAuth, validateBody(voteSchema), async (req:
     } else {
       // Insert or update vote
       if (!existingVote) {
-        run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, "post", ?, ?)', [
+        run('INSERT INTO votes (id, user_id, target_type, target_id, vote_value) VALUES (?, ?, \'post\', ?, ?)', [
           `vote-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
           userId,
           postId,
@@ -481,7 +481,7 @@ postsRouter.post('/:id/vote', requireAuth, validateBody(voteSchema), async (req:
           run('UPDATE posts SET downvotes_count = downvotes_count + 1 WHERE id = ?', [postId]);
         }
       } else if (existingVote.vote_value !== voteValue) {
-        run('UPDATE votes SET vote_value = ? WHERE user_id = ? AND target_type = "post" AND target_id = ?', [voteValue, userId, postId]);
+        run('UPDATE votes SET vote_value = ? WHERE user_id = ? AND target_type = \'post\' AND target_id = ?', [voteValue, userId, postId]);
         if (voteValue === 1) {
           run('UPDATE posts SET upvotes_count = upvotes_count + 1, downvotes_count = MAX(0, downvotes_count - 1) WHERE id = ?', [postId]);
           run('UPDATE users SET reputation = reputation + 15 WHERE id = ?', [post.author_id]);
