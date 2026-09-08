@@ -142,10 +142,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostUpdated }) => {
   const netScore = upvotes - downvotes;
 
   return (
-    <article className="group rounded-2xl bg-[#111827]/70 border border-[#1F2937] hover:border-[#2D3748] transition-all hover:shadow-xl hover:shadow-black/20 p-4 sm:p-5">
+    <article className="group rounded-2xl bg-[#111827] border border-[#1F2937] hover:border-indigo-500/40 transition-all duration-200 hover:shadow-xl hover:shadow-indigo-950/20 p-4 sm:p-5">
       <div className="flex items-start gap-3 sm:gap-4">
-        {/* Voting Pillar (Optimistic UI) */}
-        <div className="flex flex-col items-center rounded-xl bg-[#182234] border border-[#1F2937] p-1 sm:p-1.5 flex-shrink-0">
+        {/* Voting Pillar */}
+        <div className="flex flex-col items-center rounded-xl bg-[#182234] border border-[#2D3748] p-1 sm:p-1.5 flex-shrink-0">
           <button
             onClick={() => handleVote(1)}
             className={`rounded-lg p-1 transition-colors ${
@@ -155,7 +155,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostUpdated }) => {
           >
             <ChevronUp className="h-5 w-5" />
           </button>
-          <span className={`text-xs font-bold my-0.5 ${netScore > 0 ? 'text-indigo-300' : netScore < 0 ? 'text-rose-400' : 'text-gray-400'}`}>
+          <span className={`text-xs font-extrabold my-0.5 ${netScore > 0 ? 'text-indigo-300' : netScore < 0 ? 'text-rose-400' : 'text-gray-400'}`}>
             {netScore}
           </span>
           <button
@@ -187,43 +187,37 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostUpdated }) => {
               {badge.label}
             </span>
 
-            {post.is_demo === 1 && (
-              <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-amber-400 border border-amber-500/20">
-                Demo Data
-              </span>
-            )}
-
             <span>•</span>
 
             <div className="flex items-center gap-1.5">
-              <Link to={`/user/${post.author_username}`} className="font-medium text-gray-300 hover:text-white flex items-center gap-1">
+              <Link to={`/user/${post.author_username}`} className="font-semibold text-gray-200 hover:text-white flex items-center gap-1">
                 <span>{post.author_display_name || post.author_username}</span>
                 {post.author_role === 'faculty' && (
                   <span title="Verified SIT Faculty">
-                    <GraduationCap className="h-3 w-3 text-emerald-400" />
+                    <GraduationCap className="h-3.5 w-3.5 text-emerald-400" />
                   </span>
                 )}
                 {post.author_role === 'moderator' && (
                   <span title="Community Moderator">
-                    <Shield className="h-3 w-3 text-amber-400" />
+                    <Shield className="h-3.5 w-3.5 text-amber-400" />
                   </span>
                 )}
               </Link>
               {post.author_dept && (
-                <span className="text-[11px] text-gray-500">({post.author_dept})</span>
+                <span className="text-[11px] text-gray-400">({post.author_dept})</span>
               )}
             </div>
           </div>
 
           {/* Title */}
           <Link to={`/post/${post.id}`}>
-            <h2 className="text-base sm:text-lg font-bold text-white group-hover:text-indigo-300 transition-colors leading-snug">
+            <h2 className="text-base sm:text-lg font-extrabold text-white group-hover:text-indigo-300 transition-colors leading-snug">
               {post.title}
             </h2>
           </Link>
 
           {/* Content Excerpt */}
-          <p className="mt-2 text-sm text-gray-300 leading-relaxed line-clamp-3">
+          <p className="mt-2 text-xs sm:text-sm text-gray-300 leading-relaxed line-clamp-3">
             {post.content}
           </p>
 
