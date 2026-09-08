@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
-import { UserPlus, User, Mail, Lock, Building2, AlertCircle } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 const DEPARTMENTS = [
   'CSD', 'CSE', 'AI_DS', 'ECE', 'EEE', 'MECH', 'CIVIL', 'IT', 'BT', 'MBA'
@@ -14,14 +14,20 @@ export const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
-  const [department, setDepartment] = useState('CSD');
-  const [year, setYear] = useState(3);
+  const [department, setDepartment] = useState('');
+  const [year, setYear] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!department || !year) {
+      setError('Please select your department and year.');
+      return;
+    }
+    
     setIsLoading(true);
     setError(null);
     try {
@@ -31,7 +37,7 @@ export const RegisterPage: React.FC = () => {
         password,
         displayName,
         department,
-        year,
+        year: parseInt(year),
         role: 'student'
       });
       navigate('/home');
@@ -43,127 +49,146 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-2xl">
-            🏛️
-          </div>
-          <h1 className="text-2xl font-black text-white">Join Sethu Hub</h1>
-          <p className="text-xs text-gray-400">Institutional Knowledge Network for Sethu Institute of Technology</p>
-        </div>
+    <div className="min-h-screen bg-[#050505] text-[#EDEDED] font-sans selection:bg-[#333] selection:text-white flex flex-col">
+      {/* Minimal Header */}
+      <header className="w-full p-6 border-b border-[#1A1A1A]">
+        <Link to="/" className="font-semibold text-white tracking-tight flex items-center gap-2 text-sm w-fit">
+          <div className="w-4 h-4 bg-white rounded-sm"></div>
+          Sethu Hub
+        </Link>
+      </header>
 
-        <div className="rounded-3xl bg-[#111827] border border-[#1F2937] p-6 sm:p-8 space-y-5 shadow-2xl">
-          {error && (
-            <div className="rounded-xl bg-rose-500/10 border border-rose-500/30 p-3 text-xs text-rose-300 flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 text-rose-400 flex-shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
+      <div className="flex-1 flex flex-col justify-center items-center p-6">
+        <div className="w-full max-w-[400px]">
+          <div className="mb-8">
+            <h1 className="text-2xl font-semibold tracking-tight text-white mb-2">Join Sethu Hub</h1>
+            <p className="text-sm text-[#888888]">Your campus. Your community.</p>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                Full Name
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Karthik Raja"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                required
-                className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
-              />
-            </div>
+            {error && (
+              <div className="p-3 text-sm text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-sm flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                  Department
+                <label className="block text-xs font-medium text-[#888] mb-1.5">
+                  Full name
                 </label>
-                <select
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] px-3 py-2.5 text-xs text-white focus:outline-none"
-                >
-                  {DEPARTMENTS.map((d) => (
-                    <option key={d} value={d}>{d}</option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  required
+                  className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#444] transition-colors"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#888] mb-1.5">
+                    Department
+                  </label>
+                  <select
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    required
+                    className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#444] transition-colors appearance-none"
+                  >
+                    <option value="" disabled>Select department</option>
+                    {DEPARTMENTS.map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-[#888] mb-1.5">
+                    Year
+                  </label>
+                  <select
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    required
+                    className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#444] transition-colors appearance-none"
+                  >
+                    <option value="" disabled>Select year</option>
+                    {[1, 2, 3, 4].map((y) => (
+                      <option key={y} value={y}>Year {y}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                  Year of Study
+                <label className="block text-xs font-medium text-[#888] mb-1.5">
+                  College email
                 </label>
-                <select
-                  value={year}
-                  onChange={(e) => setYear(parseInt(e.target.value))}
-                  className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] px-3 py-2.5 text-xs text-white focus:outline-none"
-                >
-                  {[1, 2, 3, 4].map((y) => (
-                    <option key={y} value={y}>Year {y}</option>
-                  ))}
-                </select>
+                <input
+                  type="email"
+                  placeholder="name@sethu.ac.in"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#444] transition-colors"
+                />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                Username
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. karthik_csd"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
-              />
-            </div>
+              <div>
+                <label className="block text-xs font-medium text-[#888] mb-1.5">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  pattern="^[a-zA-Z0-9_]+$"
+                  title="Only letters, numbers, and underscores allowed"
+                  className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#444] transition-colors"
+                />
+              </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                Email Address
-              </label>
-              <input
-                type="email"
-                placeholder="e.g. karthik.csd@sethu.ac.in"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
-              />
+              <div>
+                <label className="block text-xs font-medium text-[#888] mb-1.5">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#444] transition-colors pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666] hover:text-[#EDEDED] transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 py-2.5 text-xs font-bold text-white shadow-xl shadow-indigo-600/30 transition-all flex items-center justify-center gap-1.5"
+              className="w-full bg-[#EDEDED] hover:bg-white text-black rounded-sm py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
             >
-              <UserPlus className="h-4 w-4" />
-              <span>{isLoading ? 'Creating Account...' : 'Complete Registration'}</span>
+              {isLoading ? 'Creating account...' : 'Create account'}
             </button>
           </form>
 
-          <div className="text-center text-xs text-gray-400 pt-2 border-t border-[#1F2937]">
+          <div className="mt-6 text-sm text-[#888]">
             Already have an account?{' '}
-            <Link to="/login" className="text-indigo-400 hover:underline font-semibold">
-              Sign In
+            <Link to="/login" className="text-white hover:underline transition-all">
+              Sign in
             </Link>
           </div>
         </div>
@@ -171,4 +196,3 @@ export const RegisterPage: React.FC = () => {
     </div>
   );
 };
-

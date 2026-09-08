@@ -2,33 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 import { communityService } from '../services/communityService.js';
-import {
-  Home,
-  Compass,
-  Rocket,
-  Sparkles,
-  TrendingUp,
-  Lightbulb,
-  Network,
-  Shield,
-  Briefcase
-} from 'lucide-react';
+import { Home, Users, Rocket, Calendar, Search, User, Shield } from 'lucide-react';
 
 const DEFAULT_COMMUNITIES = [
-  { slug: 'csd', name: 'Computer Science & Design', icon: '🎨' },
-  { slug: 'cse', name: 'Computer Science & Eng', icon: '💻' },
-  { slug: 'ai-ml', name: 'AI & Machine Learning', icon: '🤖' },
-  { slug: 'ece', name: 'Electronics & Comm', icon: '⚡' },
-  { slug: 'projects', name: 'Project Collaboration', icon: '🚀' },
-  { slug: 'hackathons', name: 'Hackathons & Contests', icon: '🏆' },
-  { slug: 'placements', name: 'Placements & Careers', icon: '💼' },
-  { slug: 'campus-life', name: 'Campus Life & Transport', icon: '🚌' },
-  { slug: 'startups', name: 'Startups & Incubation', icon: '💡' }
+  { slug: 'csd', name: 'Computer Science & Design' },
+  { slug: 'cse', name: 'Computer Science & Eng' },
+  { slug: 'ai-ml', name: 'AI & Machine Learning' },
+  { slug: 'ece', name: 'Electronics & Comm' },
+  { slug: 'projects', name: 'Project Collaboration' },
+  { slug: 'hackathons', name: 'Hackathons & Contests' },
+  { slug: 'placements', name: 'Placements & Careers' },
+  { slug: 'campus-life', name: 'Campus Life & Transport' }
 ];
 
 export const Sidebar: React.FC = () => {
   const { user } = useAuth();
-  const [communities, setCommunities] = useState<Array<{ slug: string; name: string; icon: string }>>(DEFAULT_COMMUNITIES);
+  const [communities, setCommunities] = useState<Array<{ slug: string; name: string }>>(DEFAULT_COMMUNITIES);
 
   useEffect(() => {
     communityService.getCommunities()
@@ -36,93 +25,72 @@ export const Sidebar: React.FC = () => {
         if (res.communities && res.communities.length > 0) {
           setCommunities(res.communities.map(c => ({
             slug: c.slug,
-            name: c.name,
-            icon: c.icon_url || '🏛️'
+            name: c.name
           })));
         }
       })
-      .catch(() => {
-        // Fallback to default
-      });
+      .catch(() => {});
   }, []);
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all ${
+    `flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
       isActive
-        ? 'bg-indigo-600/15 text-indigo-400 border border-indigo-500/20 shadow-sm'
-        : 'text-gray-400 hover:text-gray-200 hover:bg-[#111827]'
+        ? 'bg-[#111] text-[#EDEDED] font-medium border border-[#222]'
+        : 'text-[#888] hover:text-[#EDEDED] hover:bg-[#0A0A0A] border border-transparent'
     }`;
 
   return (
-    <aside className="w-64 flex-shrink-0 hidden lg:block sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pr-3">
-      <div className="space-y-6">
+    <aside className="w-64 flex-shrink-0 hidden lg:block sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pr-6 border-r border-[#111]">
+      <div className="space-y-8">
         {/* Navigation Core */}
         <div className="space-y-1">
-          <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
-            Navigation
-          </div>
-
           <NavLink to="/home" className={navClass}>
-            <Home className="h-4 w-4" />
-            <span>Home Feed</span>
+            <Home className="w-4 h-4" />
+            <span>Home</span>
           </NavLink>
-
           <NavLink to="/explore" className={navClass}>
-            <Compass className="h-4 w-4" />
-            <span>Explore Communities</span>
+            <Users className="w-4 h-4" />
+            <span>Communities</span>
           </NavLink>
-
           <NavLink to="/projects" className={navClass}>
-            <Rocket className="h-4 w-4 text-emerald-400" />
-            <span>Project Collaboration</span>
+            <Rocket className="w-4 h-4" />
+            <span>Projects</span>
           </NavLink>
-
+          <NavLink to="/events" className={navClass}>
+            <Calendar className="w-4 h-4" />
+            <span>Events</span>
+          </NavLink>
           <NavLink to="/ask-ai" className={navClass}>
-            <Sparkles className="h-4 w-4 text-purple-400" />
-            <span>Ask Sethu AI (RAG)</span>
+            <Search className="w-4 h-4" />
+            <span>Ask Sethu</span>
           </NavLink>
-
-          <NavLink to="/trending" className={navClass}>
-            <TrendingUp className="h-4 w-4 text-amber-400" />
-            <span>Campus Trends</span>
-          </NavLink>
-
-          <NavLink to="/innovation" className={navClass}>
-            <Lightbulb className="h-4 w-4 text-yellow-400" />
-            <span>Innovation Hub</span>
-          </NavLink>
-
-          <NavLink to="/knowledge-graph" className={navClass}>
-            <Network className="h-4 w-4 text-cyan-400" />
-            <span>Knowledge Graph</span>
+          <NavLink to="/profile" className={navClass}>
+            <User className="w-4 h-4" />
+            <span>Profile</span>
           </NavLink>
         </div>
 
         {/* Communities Section */}
-        <div className="space-y-1">
-          <div className="flex items-center justify-between px-3 pb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between px-3">
+            <span className="text-xs font-medium text-[#666] uppercase tracking-wider">
               Communities
             </span>
-            <Link to="/explore" className="text-[10px] text-indigo-400 hover:underline">
-              View All
-            </Link>
           </div>
-
           <div className="space-y-0.5">
-            {communities.slice(0, 10).map((c) => (
+            {communities.slice(0, 8).map((c) => (
               <NavLink
                 key={c.slug}
                 to={`/c/${c.slug}`}
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs transition-colors ${
+                  `flex items-center gap-2.5 rounded-sm px-3 py-1.5 text-sm transition-colors ${
                     isActive
-                      ? 'bg-indigo-600/10 text-indigo-300 font-semibold border border-indigo-500/20'
-                      : 'text-gray-400 hover:text-gray-200 hover:bg-[#111827]'
+                      ? 'text-[#EDEDED] font-medium'
+                      : 'text-[#888] hover:text-[#EDEDED]'
                   }`
                 }
               >
-                <span className="text-sm">{c.icon}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#333]"></span>
                 <span className="truncate">{c.name}</span>
               </NavLink>
             ))}
@@ -131,27 +99,25 @@ export const Sidebar: React.FC = () => {
 
         {/* Administrative Roles */}
         {['moderator', 'admin'].includes(user?.role || '') && (
-          <div className="space-y-1 pt-2 border-t border-[#1F2937]">
-            <div className="px-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-amber-400">
-              Moderation & Ops
+          <div className="space-y-2 pt-6 border-t border-[#111]">
+            <div className="px-3">
+              <span className="text-xs font-medium text-[#666] uppercase tracking-wider">
+                Admin
+              </span>
             </div>
-
             <NavLink to="/moderator" className={navClass}>
-              <Shield className="h-4 w-4 text-amber-400" />
+              <Shield className="w-4 h-4" />
               <span>Moderator Queue</span>
             </NavLink>
-
             {user?.role === 'admin' && (
               <NavLink to="/admin" className={navClass}>
-                <Briefcase className="h-4 w-4 text-purple-400" />
+                <Shield className="w-4 h-4" />
                 <span>Admin Analytics</span>
               </NavLink>
             )}
           </div>
         )}
-
       </div>
     </aside>
   );
 };
-

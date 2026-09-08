@@ -7,7 +7,7 @@ import { MobileNav } from './MobileNav.js';
 
 export const MainLayout: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-[#F9FAFB] flex flex-col">
+    <div className="min-h-screen bg-[#050505] text-[#EDEDED] font-sans selection:bg-[#333] selection:text-white flex flex-col">
       <Navbar />
 
       <div className="mx-auto flex w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-8 pt-6 pb-20 lg:pb-12">
