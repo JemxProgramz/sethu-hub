@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { KnowledgeGraphData } from '../services/aiService.js';
+import { X, Sparkles } from 'lucide-react';
 
 interface KnowledgeGraphCanvasProps {
   data: KnowledgeGraphData;
@@ -49,6 +50,7 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
     nodesRef.current = nodes;
 
     let animationFrameId: number;
+    let frameCount = 0;
 
     const render = () => {
       const ctx = canvas.getContext('2d');
@@ -56,18 +58,22 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
 
       ctx.clearRect(0, 0, width, height);
 
-      // Simple physics relaxation
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[j].x - nodes[i].x;
-          const dy = nodes[j].y - nodes[i].y;
-          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-          if (dist < 120) {
-            const force = (120 - dist) / 120 * 0.4;
-            nodes[i].x -= (dx / dist) * force;
-            nodes[i].y -= (dy / dist) * force;
-            nodes[j].x += (dx / dist) * force;
-            nodes[j].y += (dy / dist) * force;
+      // Physics relaxation with damping (run for 120 frames then stabilize)
+      if (frameCount < 120) {
+        frameCount++;
+        const damping = 1 - frameCount / 120;
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[j].x - nodes[i].x;
+            const dy = nodes[j].y - nodes[i].y;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            if (dist < 120) {
+              const force = ((120 - dist) / 120) * 0.4 * damping;
+              nodes[i].x -= (dx / dist) * force;
+              nodes[i].y -= (dy / dist) * force;
+              nodes[j].x += (dx / dist) * force;
+              nodes[j].y += (dy / dist) * force;
+            }
           }
         }
       }
@@ -84,7 +90,6 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
           ctx.lineWidth = 1.5;
           ctx.stroke();
 
-          // Edge Label
           const midX = (src.x + tgt.x) / 2;
           const midY = (src.y + tgt.y) / 2;
           ctx.font = '9px Inter';
@@ -99,8 +104,7 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
 
-        // Node coloring by type
-        let fillColor = '#4F46E5'; // default indigo
+        let fillColor = '#4F46E5';
         if (node.type === 'user') fillColor = '#3B82F6';
         else if (node.type === 'community') fillColor = '#8B5CF6';
         else if (node.type === 'skill') fillColor = '#10B981';
@@ -109,15 +113,14 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
 
         ctx.fillStyle = fillColor;
         ctx.shadowColor = fillColor;
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = selectedNode?.id === node.id ? 20 : 10;
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = selectedNode?.id === node.id ? 4 : 2;
+        ctx.strokeStyle = selectedNode?.id === node.id ? '#F59E0B' : '#FFFFFF';
         ctx.stroke();
 
-        // Node Label
         ctx.font = '11px Inter, sans-serif';
         ctx.fillStyle = '#FFFFFF';
         ctx.textAlign = 'center';
@@ -132,7 +135,23 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [data]);
+  }, [data, selectedNode]);
+
+  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    const clicked = nodesRef.current.find((n) => {
+      const dist = Math.sqrt((n.x - clickX) ** 2 + (n.y - clickY) ** 2);
+      return dist <= n.radius + 5;
+    });
+
+    setSelectedNode(clicked || null);
+  };
 
   return (
     <div className="relative w-full rounded-2xl bg-[#0B0F19] border border-[#1F2937] overflow-hidden p-2">
@@ -144,8 +163,32 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
         <span className="flex items-center gap-1 text-pink-400 font-semibold"><span className="h-2 w-2 rounded-full bg-pink-500" /> Topic</span>
       </div>
 
-      <canvas ref={canvasRef} className="w-full h-[550px] cursor-grab active:cursor-grabbing block" />
+      {selectedNode && (
+        <div className="absolute top-4 right-4 z-20 w-64 rounded-2xl bg-[#111827]/95 border border-indigo-500/40 p-4 shadow-2xl backdrop-blur-md text-xs space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-indigo-300 uppercase tracking-wider text-[10px]">
+              {selectedNode.type} Node Info
+            </span>
+            <button onClick={() => setSelectedNode(null)} className="text-gray-400 hover:text-white">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="font-extrabold text-sm text-white">{selectedNode.label}</div>
+          <div className="text-[11px] text-gray-400">Node ID: {selectedNode.id}</div>
+          <div className="pt-2 border-t border-[#1F2937] text-[10px] text-emerald-400 flex items-center gap-1">
+            <Sparkles className="h-3 w-3" />
+            <span>Connected in Sethu Knowledge Topology</span>
+          </div>
+        </div>
+      )}
+
+      <canvas
+        ref={canvasRef}
+        onClick={handleCanvasClick}
+        className="w-full h-[550px] cursor-pointer block"
+      />
     </div>
   );
 };
+
 

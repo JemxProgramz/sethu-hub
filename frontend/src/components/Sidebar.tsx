@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
+import { communityService } from '../services/communityService.js';
 import {
   Home,
   Compass,
@@ -10,12 +11,10 @@ import {
   Lightbulb,
   Network,
   Shield,
-  Briefcase,
-  Layers,
-  Plus
+  Briefcase
 } from 'lucide-react';
 
-const COMMUNITIES = [
+const DEFAULT_COMMUNITIES = [
   { slug: 'csd', name: 'Computer Science & Design', icon: '🎨' },
   { slug: 'cse', name: 'Computer Science & Eng', icon: '💻' },
   { slug: 'ai-ml', name: 'AI & Machine Learning', icon: '🤖' },
@@ -29,6 +28,23 @@ const COMMUNITIES = [
 
 export const Sidebar: React.FC = () => {
   const { user } = useAuth();
+  const [communities, setCommunities] = useState<Array<{ slug: string; name: string; icon: string }>>(DEFAULT_COMMUNITIES);
+
+  useEffect(() => {
+    communityService.getCommunities()
+      .then(res => {
+        if (res.communities && res.communities.length > 0) {
+          setCommunities(res.communities.map(c => ({
+            slug: c.slug,
+            name: c.name,
+            icon: c.icon_url || '🏛️'
+          })));
+        }
+      })
+      .catch(() => {
+        // Fallback to default
+      });
+  }, []);
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all ${
@@ -94,7 +110,7 @@ export const Sidebar: React.FC = () => {
           </div>
 
           <div className="space-y-0.5">
-            {COMMUNITIES.map((c) => (
+            {communities.slice(0, 10).map((c) => (
               <NavLink
                 key={c.slug}
                 to={`/c/${c.slug}`}

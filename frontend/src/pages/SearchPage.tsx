@@ -109,12 +109,46 @@ export const SearchPage: React.FC = () => {
 
       {!isLoading && q && (
         <div className="space-y-6">
+          {/* Matching Users & Faculty */}
+          {results.users && results.users.length > 0 && (
+            <div className="space-y-2">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
+                <Users className="h-4 w-4 text-emerald-400" />
+                <span>Matching Students & Faculty ({results.users.length})</span>
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {results.users.map((u: any) => (
+                  <Link
+                    key={u.id}
+                    to={`/user/${u.username}`}
+                    className="rounded-2xl bg-[#111827] border border-[#1F2937] p-3.5 flex items-center gap-3 hover:border-emerald-500/50 transition-colors"
+                  >
+                    <img
+                      src={u.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${u.username}`}
+                      alt={u.display_name}
+                      className="h-10 w-10 rounded-xl bg-gray-800 flex-shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs font-bold text-white truncate">{u.display_name || u.username}</div>
+                      <div className="text-[10px] text-gray-400 font-medium">@{u.username} • {u.department || 'General'}</div>
+                      {u.skills?.length > 0 && (
+                        <div className="text-[10px] text-emerald-400 truncate mt-0.5">
+                          {u.skills.slice(0, 3).join(', ')}
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Matching Communities */}
           {results.communities && results.communities.length > 0 && (
             <div className="space-y-2">
               <h2 className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
                 <Building2 className="h-4 w-4 text-indigo-400" />
-                <span>Matching Communities</span>
+                <span>Matching Communities ({results.communities.length})</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {results.communities.map((c: any) => (
@@ -149,9 +183,9 @@ export const SearchPage: React.FC = () => {
                   className="block rounded-2xl bg-[#111827] border border-[#1F2937] hover:border-indigo-500/50 p-4 transition-all"
                 >
                   <div className="flex items-center justify-between text-[11px] text-gray-400 mb-1">
-                    <span className="font-semibold text-indigo-400">/c/{post.metadata?.community || 'general'}</span>
+                    <span className="font-semibold text-indigo-400">/c/{post.community_slug || post.metadata?.community || 'general'}</span>
                     <span className="rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2 py-0.5 text-[10px] font-bold">
-                      {Math.round(post.similarityScore * 100)}% Semantic Match
+                      {Math.round((post.similarityScore || 0.85) * 100)}% Semantic Match
                     </span>
                   </div>
                   <h3 className="text-sm font-bold text-white leading-snug">{post.title}</h3>

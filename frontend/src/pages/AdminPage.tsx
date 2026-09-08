@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { request } from '../services/api.js';
+import { useAuth } from '../hooks/useAuth.js';
 import {
   Briefcase,
   Users,
@@ -9,10 +10,12 @@ import {
   Lightbulb,
   Building2,
   TrendingUp,
-  Activity
+  Activity,
+  Lock
 } from 'lucide-react';
 
 export const AdminPage: React.FC = () => {
+  const { user } = useAuth();
   const [stats, setStats] = useState<any | null>(null);
   const [usersList, setUsersList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,8 +37,24 @@ export const AdminPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (user && user.role === 'admin') {
+      loadData();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  if (!user || user.role !== 'admin') {
+    return (
+      <div className="rounded-3xl bg-[#111827] border border-[#1F2937] p-12 text-center space-y-4 max-w-lg mx-auto mt-8">
+        <Lock className="h-10 w-10 text-purple-400 mx-auto" />
+        <h2 className="text-lg font-bold text-white">Admin Access Required</h2>
+        <p className="text-xs text-gray-400">
+          This portal is restricted to authorized Sethu Institute of Technology administrators. Switch to an Admin persona using the top navigation persona menu to access.
+        </p>
+      </div>
+    );
+  }
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     try {

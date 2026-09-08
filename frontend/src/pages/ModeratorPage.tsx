@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { request } from '../services/api.js';
-import { Shield, AlertTriangle, CheckCircle, Trash2, UserX, AlertCircle } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth.js';
+import { Shield, AlertTriangle, CheckCircle, Trash2, MessageSquare, Lock } from 'lucide-react';
 
 export const ModeratorPage: React.FC = () => {
+  const { user } = useAuth();
   const [reports, setReports] = useState<any[]>([]);
   const [aiFlags, setAiFlags] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,8 +14,8 @@ export const ModeratorPage: React.FC = () => {
     setIsLoading(true);
     try {
       const res = await request<any>('/moderator/queue');
-      setReports(res.reports);
-      setAiFlags(res.aiFlags);
+      setReports(res.reports || []);
+      setAiFlags(res.aiFlags || []);
     } catch (err: any) {
       console.error('Moderator queue error:', err);
     } finally {
@@ -22,8 +24,12 @@ export const ModeratorPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadQueue();
-  }, []);
+    if (user && ['moderator', 'admin'].includes(user.role)) {
+      loadQueue();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const handleAction = async (targetType: string, targetId: string, action: string, flagId?: string, reportId?: string) => {
     try {
@@ -45,6 +51,18 @@ export const ModeratorPage: React.FC = () => {
       alert(err.message || 'Moderation action failed');
     }
   };
+
+  if (!user || !['moderator', 'admin'].includes(user.role)) {
+    return (
+      <div className="rounded-3xl bg-[#111827] border border-[#1F2937] p-12 text-center space-y-4 max-w-lg mx-auto mt-8">
+        <Lock className="h-10 w-10 text-amber-400 mx-auto" />
+        <h2 className="text-lg font-bold text-white">Moderator Access Required</h2>
+        <p className="text-xs text-gray-400">
+          This portal is restricted to authorized Sethu Institute of Technology moderators and administrators. Switch to a Moderator or Admin persona using the top navigation persona menu to access.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -74,7 +92,49 @@ export const ModeratorPage: React.FC = () => {
       {isLoading ? (
         <div className="py-12 text-center text-xs text-gray-400">Loading moderation queue...</div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
+          {/* User Incident Reports */}
+          <div className="space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+              <MessageSquare className="h-4 w-4" />
+              <span>Student & Faculty Reports ({reports.length})</span>
+            </h2>
+
+            {reports.length === 0 ? (
+              <div className="rounded-2xl bg-[#111827] border border-[#1F2937] p-6 text-center text-xs text-gray-400">
+                No user-submitted incident reports pending.
+              </div>
+            ) : (
+              reports.map((report) => (
+                <div key={report.id} className="rounded-2xl bg-[#111827] border border-rose-500/30 p-5 space-y-3 shadow-xl">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-rose-300">Reason: {report.reason}</span>
+                    <span className="text-gray-400">Reported by @{report.reporter_username || 'anonymous'}</span>
+                  </div>
+                  <div className="rounded-xl bg-[#0B0F19] p-3 text-xs text-gray-300 border border-[#1F2937]">
+                    <span className="font-semibold text-gray-400">Target Content ({report.target_type}): </span>
+                    <span>"{report.target_content || report.details || report.target_id}"</span>
+                  </div>
+                  <div className="flex justify-end gap-2 text-xs">
+                    <button
+                      onClick={() => handleAction(report.target_type, report.target_id, 'dismiss', undefined, report.id)}
+                      className="rounded-xl bg-[#182234] hover:bg-[#2D3748] text-gray-200 border border-[#2D3748] px-3.5 py-1.5 font-bold transition-colors"
+                    >
+                      Dismiss Report
+                    </button>
+                    <button
+                      onClick={() => handleAction(report.target_type, report.target_id, 'remove', undefined, report.id)}
+                      className="rounded-xl bg-rose-600 hover:bg-rose-500 text-white px-3.5 py-1.5 font-bold transition-colors flex items-center gap-1"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                      <span>Remove Content</span>
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
           {/* AI Safety Flags */}
           <div className="space-y-3">
             <h2 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
@@ -106,13 +166,11 @@ export const ModeratorPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* AI Reasoning */}
                   <div className="rounded-xl bg-[#0B0F19] border border-[#1F2937] p-3 text-xs">
                     <span className="font-bold text-indigo-300">AI Flag Explanation: </span>
                     <span className="text-gray-300">{flag.reasoning}</span>
                   </div>
 
-                  {/* Content Preview */}
                   {flag.post_title && (
                     <div className="text-xs text-gray-400">
                       <span className="font-semibold text-white">Post Title: </span>
@@ -120,7 +178,6 @@ export const ModeratorPage: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Action Buttons */}
                   <div className="pt-2 border-t border-[#1F2937] flex items-center justify-end gap-2 text-xs">
                     <button
                       onClick={() => handleAction(flag.target_type, flag.target_id, 'dismiss', flag.id)}
@@ -153,4 +210,5 @@ export const ModeratorPage: React.FC = () => {
     </div>
   );
 };
+
 

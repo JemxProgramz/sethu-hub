@@ -125,19 +125,22 @@ export const AskSethuAIPage: React.FC = () => {
                     <span>Source Citations on Sethu Hub:</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {c.a.citations.map((cite, idx) => (
-                      <Link
-                        key={idx}
-                        to={`/post/${cite.postId}`}
-                        className="rounded-xl bg-[#0B0F19] hover:bg-[#182234] border border-[#1F2937] p-2.5 text-xs text-indigo-300 hover:text-white transition-colors flex items-center justify-between gap-2"
-                      >
-                        <div className="truncate">
-                          <div className="font-semibold truncate">{cite.title}</div>
-                          <div className="text-[10px] text-gray-500">By {cite.author}</div>
-                        </div>
-                        <ExternalLink className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
-                      </Link>
-                    ))}
+                    {c.a.citations.map((cite, idx) => {
+                      const targetUrl = cite.postId.startsWith('p-') ? `/search?q=${encodeURIComponent(cite.title)}` : `/post/${cite.postId}`;
+                      return (
+                        <Link
+                          key={idx}
+                          to={targetUrl}
+                          className="rounded-xl bg-[#0B0F19] hover:bg-[#182234] border border-[#1F2937] p-2.5 text-xs text-indigo-300 hover:text-white transition-colors flex items-center justify-between gap-2"
+                        >
+                          <div className="truncate">
+                            <div className="font-semibold truncate">{cite.title}</div>
+                            <div className="text-[10px] text-gray-500">By {cite.author}</div>
+                          </div>
+                          <ExternalLink className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               )}

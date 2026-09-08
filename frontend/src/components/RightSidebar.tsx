@@ -78,7 +78,7 @@ export const RightSidebar: React.FC = () => {
               <div className="mt-1.5 text-xs font-bold text-white">SIT TechFest 2026 Hackfest</div>
               <p className="mt-1 text-[11px] text-gray-400">Rs. 1,50,000 cash prizes • Smart Campus & IoT tracks</p>
               <Link
-                to="/post/p-event-hackfest"
+                to="/c/hackathons"
                 className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-400 hover:text-indigo-300"
               >
                 <span>View Event Details</span>
