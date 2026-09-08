@@ -235,7 +235,7 @@ export const ProjectsPage: React.FC = () => {
           <div className="w-full max-w-xl rounded-3xl bg-[#111827] border border-purple-500/40 p-6 shadow-2xl animate-in zoom-in-95">
             <div className="flex items-center justify-between pb-3 border-b border-[#1F2937]">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-purple-400 animate-pulse" />
+                <Sparkles className="h-5 w-5 text-purple-400" />
                 <div>
                   <h3 className="text-sm font-bold text-white uppercase tracking-wider">
                     Agent 6: AI Team Matchmaking

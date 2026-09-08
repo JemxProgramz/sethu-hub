@@ -4,7 +4,6 @@ import { Navbar } from '../components/Navbar.js';
 import { Sidebar } from '../components/Sidebar.js';
 import { RightSidebar } from '../components/RightSidebar.js';
 import { MobileNav } from './MobileNav.js';
-import { KillerDemoWalkthrough } from '../components/KillerDemoWalkthrough.js';
 
 export const MainLayout: React.FC = () => {
   return (
@@ -22,7 +21,6 @@ export const MainLayout: React.FC = () => {
       </div>
 
       <MobileNav />
-      <KillerDemoWalkthrough />
     </div>
   );
 };

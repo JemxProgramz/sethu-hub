@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { communityService, CommunityItem } from '../services/communityService.js';
 import { postService } from '../services/postService.js';
-import { AIPrePublishCoPilot } from '../components/AIPrePublishCoPilot.js';
 import { useAuth } from '../hooks/useAuth.js';
 import {
   MessageSquare,
@@ -165,9 +164,8 @@ export const CreatePostPage: React.FC = () => {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left 2 Cols: Form Inputs */}
-        <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-4">
+      <div className="w-full">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="rounded-2xl bg-[#111827] border border-[#1F2937] p-4 sm:p-5 space-y-4">
             {/* Target Community Dropdown */}
             <div>
@@ -351,20 +349,6 @@ export const CreatePostPage: React.FC = () => {
             </div>
           </div>
         </form>
-
-        {/* Right Col: AI Pre-Publish Co-Pilot */}
-        <div>
-          <AIPrePublishCoPilot
-            title={title}
-            content={content}
-            postType={postType}
-            selectedCommunity={communitySlug}
-            selectedTags={tags}
-            onSelectCommunity={(slug) => setCommunitySlug(slug)}
-            onAddTag={(tag) => handleAddTag(tag)}
-            onApplyTitle={(enh) => setTitle(enh)}
-          />
-        </div>
       </div>
     </div>
   );

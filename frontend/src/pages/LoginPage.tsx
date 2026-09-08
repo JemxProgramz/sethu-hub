@@ -38,7 +38,7 @@ export const LoginPage: React.FC = () => {
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-indigo-700 shadow-xl shadow-indigo-500/20 text-2xl">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-2xl">
             🏛️
           </div>
           <h1 className="text-2xl font-black text-white">SETHU HUB</h1>

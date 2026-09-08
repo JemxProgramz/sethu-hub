@@ -121,10 +121,10 @@ export const PostDetailPage: React.FC = () => {
       <PostCard post={post} onPostUpdated={loadData} />
 
       {/* AI Discussion Summarizer Banner / Card */}
-      <div className="rounded-2xl bg-gradient-to-br from-[#111827] via-[#182234] to-[#111827] border border-indigo-500/30 p-4 sm:p-5 shadow-xl">
-        <div className="flex items-center justify-between">
+      <div className="rounded-2xl bg-[#111827] border border-[#1F2937] p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-purple-400 animate-pulse" />
+            <Sparkles className="h-4 w-4 text-purple-400" />
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-white">
                 AI Discussion Summarizer
@@ -136,7 +136,7 @@ export const PostDetailPage: React.FC = () => {
           <button
             onClick={handleSummarize}
             disabled={isSummarizing}
-            className="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg shadow-indigo-600/20 disabled:opacity-50 transition-all flex items-center gap-1.5"
+            className="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-3.5 py-1.5 text-xs font-bold text-white transition-all flex items-center gap-1.5 whitespace-nowrap"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>{isSummarizing ? 'Synthesizing...' : 'Summarize Thread'}</span>

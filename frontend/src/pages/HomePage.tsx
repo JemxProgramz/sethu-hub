@@ -65,7 +65,7 @@ export const HomePage: React.FC = () => {
                   : 'text-gray-400 hover:text-white hover:bg-[#1F2937]'
               }`}
             >
-              <Icon className={`h-3.5 w-3.5 ${isActive && tab.id === 'ai_recommended' ? 'text-amber-300 animate-pulse' : ''}`} />
+              <Icon className={`h-3.5 w-3.5 ${isActive && tab.id === 'ai_recommended' ? 'text-amber-300' : ''}`} />
               <span>{tab.label}</span>
             </button>
           );

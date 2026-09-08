@@ -132,7 +132,7 @@ export const AdminPage: React.FC = () => {
           </div>
 
           {/* AI Intelligence Insights Box */}
-          <div className="rounded-2xl bg-gradient-to-br from-[#111827] to-[#182234] border border-purple-500/30 p-5 space-y-3">
+          <div className="rounded-2xl bg-[#111827] border border-[#1F2937] p-5 space-y-3">
             <h2 className="text-xs font-bold uppercase tracking-wider text-purple-300 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-purple-400" />
               <span>AI Agent Telemetry & Campus Signals</span>

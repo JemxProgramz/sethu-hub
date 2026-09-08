@@ -150,16 +150,6 @@ export const Sidebar: React.FC = () => {
           </div>
         )}
 
-        {/* Transparent Demo Notice Badge */}
-        <div className="rounded-2xl bg-gradient-to-br from-[#111827] to-[#182234] border border-[#1F2937] p-3.5">
-          <div className="flex items-center gap-2 text-xs font-bold text-amber-400">
-            <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-            <span>DEMO MODE ACTIVE</span>
-          </div>
-          <p className="mt-1 text-[11px] text-gray-400 leading-relaxed">
-            Populated with realistic fictional data for Sethu Institute of Technology.
-          </p>
-        </div>
       </div>
     </aside>
   );
