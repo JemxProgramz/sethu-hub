@@ -17,30 +17,30 @@ export const KnowledgeGraphPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-extrabold text-white flex items-center gap-2">
+        <h1 className="text-xl font-semibold text-white flex items-center gap-2">
           <Network className="h-5 w-5 text-cyan-400" />
           <span>Agent 10: Sethu Knowledge Graph</span>
         </h1>
-        <p className="text-xs text-gray-400 mt-0.5">
+        <p className="text-xs text-[#888] mt-0.5">
           Interactive relational mapping connecting students, verified skills, campus discussions, communities, and innovations
         </p>
       </div>
 
       {isLoading ? (
-        <div className="py-16 text-center text-xs text-gray-400">
+        <div className="py-16 text-center text-xs text-[#888]">
           <Sparkles className="h-6 w-6 text-cyan-400 animate-spin mx-auto mb-2" />
           <span>Computing institutional knowledge graph topology...</span>
         </div>
       ) : graphData ? (
         <div className="space-y-4">
           <KnowledgeGraphCanvas data={graphData} />
-          <div className="rounded-2xl bg-[#111827] border border-[#1F2937] p-4 text-xs text-gray-400 leading-relaxed">
+          <div className="rounded-sm bg-[#0A0A0A] border border-[#222] p-4 text-xs text-[#888] leading-relaxed">
             <span className="font-bold text-white">How it works: </span>
             The knowledge graph dynamically derives edges (AUTHORED, HAS_SKILL, COLLABORATES_ON, MINED_INTO) as students interact, enabling cross-departmental discovery and interdisciplinary collaboration across Sethu Institute of Technology.
           </div>
         </div>
       ) : (
-        <div className="text-center py-12 text-xs text-gray-400">Graph data unavailable.</div>
+        <div className="text-center py-12 text-xs text-[#888]">Graph data unavailable.</div>
       )}
     </div>
   );

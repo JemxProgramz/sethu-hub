@@ -90,12 +90,12 @@ export const CommentNode: React.FC<CommentNodeProps> = ({
   const isAccepted = comment.is_accepted_answer === 1;
 
   return (
-    <div className={`mt-3 ${depth > 0 ? 'ml-4 sm:ml-6 pl-3 sm:pl-4 border-l-2 border-[#1F2937]' : ''}`}>
+    <div className={`mt-3 ${depth > 0 ? 'ml-4 sm:ml-6 pl-3 sm:pl-4 border-l-2 border-[#222]' : ''}`}>
       <div
-        className={`rounded-xl p-3.5 sm:p-4 transition-all ${
+        className={`rounded-sm p-3.5 sm:p-4 transition-all ${
           isAccepted
             ? 'bg-emerald-950/20 border-2 border-emerald-500/40 shadow-lg shadow-emerald-950/20'
-            : 'bg-[#111827]/80 border border-[#1F2937]'
+            : 'bg-[#0A0A0A]/80 border border-[#222]'
         }`}
       >
         {/* Accepted Banner */}
@@ -107,7 +107,7 @@ export const CommentNode: React.FC<CommentNodeProps> = ({
         )}
 
         {/* Header */}
-        <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
+        <div className="flex items-center justify-between text-xs text-[#888] mb-2">
           <div className="flex items-center gap-2">
             <img
               src={comment.author_avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${comment.author_username}`}
@@ -122,11 +122,11 @@ export const CommentNode: React.FC<CommentNodeProps> = ({
               </span>
             )}
             {comment.author_dept && (
-              <span className="text-[10px] text-gray-500">({comment.author_dept})</span>
+              <span className="text-[10px] text-[#666]">({comment.author_dept})</span>
             )}
           </div>
 
-          <span className="text-[11px] text-gray-400">
+          <span className="text-[11px] text-[#888]">
             {new Date(comment.created_at).toLocaleDateString()}
           </span>
         </div>
@@ -137,12 +137,12 @@ export const CommentNode: React.FC<CommentNodeProps> = ({
         </div>
 
         {/* Bottom Actions */}
-        <div className="mt-3 flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-[#1F2937]/50">
+        <div className="mt-3 flex items-center gap-4 text-xs text-[#888] pt-2 border-t border-[#222]/50">
           <div className="flex items-center gap-1">
             <button
               onClick={() => handleVote(1)}
-              className={`p-1 rounded hover:text-indigo-400 transition-colors ${
-                userVote === 1 ? 'text-indigo-400 font-bold' : ''
+              className={`p-1 rounded hover:text-[#EDEDED] transition-colors ${
+                userVote === 1 ? 'text-[#EDEDED] font-bold' : ''
               }`}
             >
               <ChevronUp className="h-4 w-4" />
@@ -179,20 +179,20 @@ export const CommentNode: React.FC<CommentNodeProps> = ({
 
         {/* Reply Form */}
         {isReplying && (
-          <form onSubmit={submitReply} className="mt-3 pt-3 border-t border-[#1F2937]">
+          <form onSubmit={submitReply} className="mt-3 pt-3 border-t border-[#222]">
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder={`Reply to ${comment.author_display_name}...`}
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
-                className="flex-1 rounded-xl bg-[#0B0F19] border border-[#1F2937] px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+                className="flex-1 rounded-sm bg-[#050505] border border-[#222] px-3 py-1.5 text-xs text-white placeholder-[#444] focus:outline-none focus:border-[#444]"
                 autoFocus
               />
               <button
                 type="submit"
                 disabled={isSubmitting || !replyText.trim()}
-                className="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50 flex items-center gap-1"
+                className="rounded-sm bg-[#EDEDED] text-black hover:bg-white px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50 flex items-center gap-1"
               >
                 <Send className="h-3 w-3" />
                 <span>Reply</span>

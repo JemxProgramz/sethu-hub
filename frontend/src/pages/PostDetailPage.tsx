@@ -89,8 +89,8 @@ export const PostDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="py-12 text-center text-xs text-gray-400">
-        <Sparkles className="h-6 w-6 text-indigo-400 animate-spin mx-auto mb-2" />
+      <div className="py-12 text-center text-xs text-[#888]">
+        <Sparkles className="h-6 w-6 text-[#EDEDED] animate-spin mx-auto mb-2" />
         <span>Loading discussion...</span>
       </div>
     );
@@ -98,11 +98,11 @@ export const PostDetailPage: React.FC = () => {
 
   if (error || !post) {
     return (
-      <div className="rounded-2xl bg-rose-500/10 border border-rose-500/30 p-6 text-center">
+      <div className="rounded-sm bg-rose-500/10 border border-rose-500/30 p-6 text-center">
         <AlertCircle className="h-8 w-8 text-rose-400 mx-auto mb-2" />
         <h3 className="text-sm font-bold text-rose-300">Post Not Found</h3>
-        <p className="mt-1 text-xs text-gray-400">{error || 'This post may have been removed or does not exist.'}</p>
-        <Link to="/home" className="mt-4 inline-block text-xs font-bold text-indigo-400 hover:underline">
+        <p className="mt-1 text-xs text-[#888]">{error || 'This post may have been removed or does not exist.'}</p>
+        <Link to="/home" className="mt-4 inline-block text-xs font-bold text-[#EDEDED] hover:underline">
           ← Back to Home
         </Link>
       </div>
@@ -112,7 +112,7 @@ export const PostDetailPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Back Button */}
-      <Link to="/home" className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-white transition-colors">
+      <Link to="/home" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#888] hover:text-white transition-colors">
         <ArrowLeft className="h-3.5 w-3.5" />
         <span>Back to discussions</span>
       </Link>
@@ -120,23 +120,23 @@ export const PostDetailPage: React.FC = () => {
       {/* Main Post Card */}
       <PostCard post={post} onPostUpdated={loadData} />
 
-      {/* AI Discussion Summarizer Banner / Card */}
-      <div className="rounded-2xl bg-[#111827] border border-[#1F2937] p-4 sm:p-5">
+      {/* Thread Summary Banner / Card */}
+      <div className="rounded-sm bg-[#0A0A0A] border border-[#222] p-4 sm:p-5">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-purple-400" />
+            <Sparkles className="h-4 w-4 text-[#888]" />
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                AI Discussion Summarizer
+                Thread Summary
               </h3>
-              <p className="text-[10px] text-gray-400">Synthesizes key arguments, consensus, and action items from {totalComments} comments</p>
+              <p className="text-[10px] text-[#888]">Synthesizes key arguments, consensus, and action items from {totalComments} comments</p>
             </div>
           </div>
 
           <button
             onClick={handleSummarize}
             disabled={isSummarizing}
-            className="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-3.5 py-1.5 text-xs font-bold text-white transition-all flex items-center gap-1.5 whitespace-nowrap"
+            className="rounded-sm bg-[#EDEDED] text-black hover:bg-white px-3.5 py-1.5 text-xs font-bold text-white transition-all flex items-center gap-1.5 whitespace-nowrap"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>{isSummarizing ? 'Synthesizing...' : 'Summarize Thread'}</span>
@@ -144,15 +144,15 @@ export const PostDetailPage: React.FC = () => {
         </div>
 
         {summary && isSummaryExpanded && (
-          <div className="mt-4 pt-4 border-t border-[#1F2937] space-y-3.5 text-xs text-gray-300 animate-in fade-in">
+          <div className="mt-4 pt-4 border-t border-[#222] space-y-3.5 text-xs text-gray-300 animate-in fade-in">
             <div>
-              <span className="font-bold text-indigo-300">📌 Core Question / Context:</span>
+              <span className="font-bold text-[#EDEDED]">📌 Core Question / Context:</span>
               <p className="mt-0.5 text-gray-300">{summary.main_question}</p>
             </div>
 
             {summary.key_arguments.length > 0 && (
               <div>
-                <span className="font-bold text-purple-300">💡 Key Perspectives & Arguments:</span>
+                <span className="font-bold text-[#888]">💡 Key Perspectives & Arguments:</span>
                 <ul className="list-disc list-inside mt-1 space-y-1 text-gray-300">
                   {summary.key_arguments.map((arg, i) => (
                     <li key={i}>{arg}</li>
@@ -173,7 +173,7 @@ export const PostDetailPage: React.FC = () => {
             )}
 
             {summary.final_takeaways.length > 0 && (
-              <div className="rounded-xl bg-indigo-950/40 border border-indigo-500/20 p-3">
+              <div className="rounded-sm bg-[#111] border border-[#333] p-3">
                 <span className="font-bold text-white flex items-center gap-1.5 mb-1">
                   <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                   <span>Final Takeaways:</span>
@@ -191,29 +191,29 @@ export const PostDetailPage: React.FC = () => {
 
       {/* Comment Section */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between pb-2 border-b border-[#1F2937]">
+        <div className="flex items-center justify-between pb-2 border-b border-[#222]">
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
-            <MessageSquare className="h-4 w-4 text-indigo-400" />
+            <MessageSquare className="h-4 w-4 text-[#EDEDED]" />
             <span>Discussion ({totalComments})</span>
           </h3>
         </div>
 
         {/* Comment Box */}
-        <form onSubmit={handleAddComment} className="rounded-2xl bg-[#111827] border border-[#1F2937] p-4">
+        <form onSubmit={handleAddComment} className="rounded-sm bg-[#0A0A0A] border border-[#222] p-4">
           <textarea
             rows={3}
             placeholder={user ? `Participate in the discussion as ${user.displayName}...` : 'Sign in to join the discussion...'}
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             disabled={!user}
-            className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full rounded-sm bg-[#050505] border border-[#222] p-3 text-xs text-white placeholder-[#444] focus:outline-none focus:border-[#444] transition-colors"
           />
           <div className="mt-2 flex items-center justify-between">
-            <span className="text-[11px] text-gray-400">Supports Markdown & code blocks</span>
+            <span className="text-[11px] text-[#888]">Supports Markdown & code blocks</span>
             <button
               type="submit"
               disabled={isSubmitting || !commentText.trim() || !user}
-              className="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-xs font-bold text-white disabled:opacity-40 transition-colors flex items-center gap-1.5"
+              className="rounded-sm bg-[#EDEDED] text-black hover:bg-white px-4 py-2 text-xs font-bold text-white disabled:opacity-40 transition-colors flex items-center gap-1.5"
             >
               <Send className="h-3.5 w-3.5" />
               <span>{isSubmitting ? 'Posting...' : 'Post Comment'}</span>
@@ -223,7 +223,7 @@ export const PostDetailPage: React.FC = () => {
 
         {/* Nested Comments List */}
         {comments.length === 0 ? (
-          <div className="text-center py-8 text-xs text-gray-400 bg-[#111827] rounded-2xl border border-[#1F2937]">
+          <div className="text-center py-8 text-xs text-[#888] bg-[#0A0A0A] rounded-sm border border-[#222]">
             No replies yet. Start the conversation!
           </div>
         ) : (

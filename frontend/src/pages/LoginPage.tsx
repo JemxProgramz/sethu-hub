@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
-import { LogIn, Sparkles, User, Lock, AlertCircle } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const { login, switchDemoRole } = useAuth();
@@ -9,6 +9,7 @@ export const LoginPage: React.FC = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,119 +35,102 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6">
-        {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-2xl">
-            🏛️
-          </div>
-          <h1 className="text-2xl font-black text-white">SETHU HUB</h1>
-          <p className="text-xs text-gray-400">Where Sethu Connects • Sethu Institute of Technology</p>
-        </div>
+    <div className="min-h-screen bg-[#050505] text-[#EDEDED] font-sans selection:bg-[#333] selection:text-white flex flex-col">
+      <header className="w-full p-6 border-b border-[#1A1A1A]">
+        <Link to="/" className="font-semibold text-white tracking-tight flex items-center gap-2 text-sm w-fit">
+          <div className="w-4 h-4 bg-white rounded-sm"></div>
+          Sethu Hub
+        </Link>
+      </header>
 
-        {/* Login Card */}
-        <div className="rounded-3xl bg-[#111827] border border-[#1F2937] p-6 sm:p-8 space-y-5 shadow-2xl">
-          {error && (
-            <div className="rounded-xl bg-rose-500/10 border border-rose-500/30 p-3 text-xs text-rose-300 flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 text-rose-400 flex-shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
+      <div className="flex-1 flex flex-col justify-center items-center p-6">
+        <div className="w-full max-w-[400px]">
+          <div className="mb-8">
+            <h1 className="text-2xl font-semibold tracking-tight text-white mb-2">Sign in</h1>
+            <p className="text-sm text-[#888]">Welcome back to Sethu Hub.</p>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                Username or Institutional Email
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="e.g. karthik_csd or karthik.csd@sethu.ac.in"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] py-2.5 pl-10 pr-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
-                />
+            {error && (
+              <div className="p-3 text-sm text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-sm flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span>{error}</span>
               </div>
+            )}
+
+            <div>
+              <label className="block text-xs font-medium text-[#888] mb-1.5">
+                Username or email
+              </label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#444] transition-colors"
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
+              <label className="block text-xs font-medium text-[#888] mb-1.5">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
-                  type="password"
-                  placeholder="••••••••"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] py-2.5 pl-10 pr-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#0A0A0A] border border-[#222] rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#444] transition-colors pr-10"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666] hover:text-[#EDEDED] transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 py-2.5 text-xs font-bold text-white shadow-xl shadow-indigo-600/30 transition-all flex items-center justify-center gap-1.5"
+              className="w-full bg-[#EDEDED] hover:bg-white text-black rounded-sm py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
             >
-              <LogIn className="h-4 w-4" />
-              <span>{isLoading ? 'Authenticating...' : 'Sign In'}</span>
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 
-          {/* Instant 1-Click Demo Login */}
-          <div className="pt-4 border-t border-[#1F2937] space-y-2">
-            <div className="text-center text-[10px] font-bold uppercase tracking-wider text-gray-400">
-              Or instant 1-click test as:
+          {/* Demo Login */}
+          <div className="mt-8 pt-6 border-t border-[#111]">
+            <div className="text-xs text-[#666] mb-3">
+              Quick demo access
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('student')}
-                className="rounded-xl bg-[#182234] hover:bg-indigo-600/20 border border-[#2D3748] p-2 text-left transition-colors"
-              >
-                <div className="text-xs font-bold text-white">Student</div>
-                <div className="text-[10px] text-gray-400">Karthik (CSD)</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('faculty')}
-                className="rounded-xl bg-[#182234] hover:bg-emerald-600/20 border border-[#2D3748] p-2 text-left transition-colors"
-              >
-                <div className="text-xs font-bold text-white">Faculty</div>
-                <div className="text-[10px] text-gray-400">Dr. Ramanathan</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('moderator')}
-                className="rounded-xl bg-[#182234] hover:bg-amber-600/20 border border-[#2D3748] p-2 text-left transition-colors"
-              >
-                <div className="text-xs font-bold text-white">Moderator</div>
-                <div className="text-[10px] text-gray-400">Priya M. (ECE)</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('admin')}
-                className="rounded-xl bg-[#182234] hover:bg-purple-600/20 border border-[#2D3748] p-2 text-left transition-colors"
-              >
-                <div className="text-xs font-bold text-white">Admin</div>
-                <div className="text-[10px] text-gray-400">SIT Admin Ops</div>
-              </button>
+              {([
+                { role: 'student' as const, name: 'Student', desc: 'Karthik (CSD)' },
+                { role: 'faculty' as const, name: 'Faculty', desc: 'Dr. Ramanathan' },
+                { role: 'moderator' as const, name: 'Moderator', desc: 'Priya M. (ECE)' },
+                { role: 'admin' as const, name: 'Admin', desc: 'SIT Admin' }
+              ]).map((d) => (
+                <button
+                  key={d.role}
+                  type="button"
+                  onClick={() => handleQuickDemo(d.role)}
+                  className="rounded-sm bg-[#0A0A0A] hover:bg-[#111] border border-[#222] hover:border-[#444] p-2.5 text-left transition-colors"
+                >
+                  <div className="text-xs font-medium text-[#EDEDED]">{d.name}</div>
+                  <div className="text-xs text-[#666] mt-0.5">{d.desc}</div>
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="text-center text-xs text-gray-400">
+          <div className="mt-6 text-sm text-[#888]">
             Don't have an account?{' '}
-            <Link to="/register" className="text-indigo-400 hover:underline font-semibold">
-              Register here
+            <Link to="/register" className="text-white hover:underline transition-all">
+              Register
             </Link>
           </div>
         </div>
@@ -154,4 +138,3 @@ export const LoginPage: React.FC = () => {
     </div>
   );
 };
-

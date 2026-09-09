@@ -121,18 +121,18 @@ export const ProjectsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-extrabold text-white flex items-center gap-2">
+          <h1 className="text-xl font-semibold text-white flex items-center gap-2">
             <Rocket className="h-5 w-5 text-emerald-400" />
             <span>Project Collaboration Board</span>
           </h1>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-xs text-[#888] mt-0.5">
             Inter-departmental teamwork for Smart India Hackathons, SIT IEDC grants, and final year prototypes
           </p>
         </div>
 
         <Link
           to="/create"
-          className="flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-indigo-600/20 transition-all"
+          className="flex items-center gap-2 rounded-sm bg-[#EDEDED] text-black hover:bg-white px-4 py-2 text-xs font-bold text-white shadow-lg  transition-all"
         >
           <Rocket className="h-4 w-4" />
           <span>Post a Project</span>
@@ -140,7 +140,7 @@ export const ProjectsPage: React.FC = () => {
       </div>
 
       {isLoading ? (
-        <div className="py-12 text-center text-xs text-gray-400">Loading active projects...</div>
+        <div className="py-12 text-center text-xs text-[#888]">Loading active projects...</div>
       ) : (
         <div className="space-y-4">
           {projects.map((proj) => {
@@ -149,10 +149,10 @@ export const ProjectsPage: React.FC = () => {
               <div
                 key={proj.id}
                 id={`proj-${proj.id}`}
-                className={`rounded-2xl bg-[#111827] border transition-all p-5 ${
+                className={`rounded-sm bg-[#0A0A0A] border transition-all p-5 ${
                   isSelected
-                    ? 'border-indigo-500 ring-2 ring-indigo-500/20 shadow-xl shadow-indigo-950/40'
-                    : 'border-[#1F2937] hover:border-gray-700'
+                    ? 'border-[#444] ring-2 ring-indigo-500/20 shadow-xl '
+                    : 'border-[#222] hover:border-gray-700'
                 }`}
               >
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -161,14 +161,14 @@ export const ProjectsPage: React.FC = () => {
                     <span className="rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                       {proj.status}
                     </span>
-                    <span className="text-[11px] text-gray-400">Team Size: {proj.teamSize}</span>
+                    <span className="text-[11px] text-[#888]">Team Size: {proj.teamSize}</span>
                   </div>
 
-                  <Link to={`/post/${proj.postId}`} className="text-base font-bold text-white hover:text-indigo-400 transition-colors">
+                  <Link to={`/post/${proj.postId}`} className="text-base font-bold text-white hover:text-[#EDEDED] transition-colors">
                     {proj.title}
                   </Link>
 
-                  <p className="mt-1 text-xs text-gray-400">
+                  <p className="mt-1 text-xs text-[#888]">
                     Lead: <span className="text-gray-200 font-semibold">{proj.author.displayName}</span> ({proj.author.department})
                   </p>
                 </div>
@@ -176,15 +176,15 @@ export const ProjectsPage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleRunTeamMatch(proj)}
-                    className="rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 px-3.5 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5"
+                    className="rounded-sm bg-[#111] hover:bg-[#222] border border-[#333] text-[#888] px-3.5 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5"
                   >
-                    <Sparkles className="h-3.5 w-3.5 text-purple-400" />
+                    <Sparkles className="h-3.5 w-3.5 text-[#888]" />
                     <span>AI Team Match</span>
                   </button>
 
                   <button
                     onClick={() => setSelectedProjectForApply(proj)}
-                    className="rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 text-xs font-bold transition-all"
+                    className="rounded-sm bg-[#EDEDED] text-black hover:bg-white text-white px-3.5 py-1.5 text-xs font-bold transition-all"
                   >
                     Request to Join
                   </button>
@@ -192,14 +192,14 @@ export const ProjectsPage: React.FC = () => {
               </div>
 
               {/* Problem statement */}
-              <div className="mt-3 rounded-xl bg-[#0B0F19] border border-[#1F2937] p-3 text-xs">
-                <span className="font-semibold text-gray-400 text-[11px]">Problem Statement: </span>
+              <div className="mt-3 rounded-sm bg-[#050505] border border-[#222] p-3 text-xs">
+                <span className="font-semibold text-[#888] text-[11px]">Problem Statement: </span>
                 <span className="text-gray-200">{proj.problemStatement}</span>
               </div>
 
               {/* Required skills */}
               <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                <span className="text-xs text-gray-400 mr-1">Required:</span>
+                <span className="text-xs text-[#888] mr-1">Required:</span>
                 {proj.requiredSkills.map((s: string, idx: number) => (
                   <span key={idx} className="rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 text-[11px] font-semibold">
                     {s}
@@ -208,9 +208,9 @@ export const ProjectsPage: React.FC = () => {
               </div>
 
               {/* Members roster */}
-              <div className="mt-4 pt-3 border-t border-[#1F2937] flex items-center justify-between text-xs text-gray-400">
+              <div className="mt-4 pt-3 border-t border-[#222] flex items-center justify-between text-xs text-[#888]">
                 <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-gray-500" />
+                  <Users className="h-4 w-4 text-[#666]" />
                   <span>Current Roster ({proj.members.length}):</span>
                   {proj.members.map((m: any, i: number) => (
                     <span key={i} className="text-gray-200 font-medium">
@@ -218,7 +218,7 @@ export const ProjectsPage: React.FC = () => {
                     </span>
                   ))}
                 </div>
-                <Link to={`/post/${proj.postId}`} className="text-indigo-400 hover:underline flex items-center gap-1">
+                <Link to={`/post/${proj.postId}`} className="text-[#EDEDED] hover:underline flex items-center gap-1">
                   <span>View Full Thread</span>
                   <ArrowRight className="h-3 w-3" />
                 </Link>
@@ -232,35 +232,35 @@ export const ProjectsPage: React.FC = () => {
       {/* AI Team Match Results Modal */}
       {(isMatching || matchedCandidates !== null) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="w-full max-w-xl rounded-3xl bg-[#111827] border border-purple-500/40 p-6 shadow-2xl animate-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1F2937]">
+          <div className="w-full max-w-xl rounded-sm bg-[#0A0A0A] border border-[#333] p-6 shadow-lg animate-in zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-[#222]">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-purple-400" />
+                <Sparkles className="h-5 w-5 text-[#888]" />
                 <div>
                   <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-                    Agent 6: AI Team Matchmaking
+                    Find Teammates
                   </h3>
-                  <p className="text-[11px] text-gray-400">Matching SIT students for "{activeMatchingProjectTitle}"</p>
+                  <p className="text-[11px] text-[#888]">Matching SIT students for "{activeMatchingProjectTitle}"</p>
                 </div>
               </div>
               <button
                 onClick={() => { setMatchedCandidates(null); setIsMatching(false); }}
-                className="rounded-lg p-1 text-gray-400 hover:text-white"
+                className="rounded-lg p-1 text-[#888] hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
             {isMatching ? (
-              <div className="py-12 text-center text-xs text-purple-300 space-y-2">
-                <Sparkles className="h-8 w-8 animate-spin mx-auto text-purple-400" />
+              <div className="py-12 text-center text-xs text-[#888] space-y-2">
+                <Sparkles className="h-8 w-8 animate-spin mx-auto text-[#888]" />
                 <p>Analyzing project requirements and querying verified student skills across SIT...</p>
               </div>
             ) : (
               <div className="mt-4 space-y-3 max-h-[420px] overflow-y-auto pr-1">
                 {matchedCandidates && matchedCandidates.length > 0 ? (
                   matchedCandidates.map((c) => (
-                    <div key={c.user_id} className="rounded-xl bg-[#0B0F19] border border-[#1F2937] p-3.5 space-y-2">
+                    <div key={c.user_id} className="rounded-sm bg-[#050505] border border-[#222] p-3.5 space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
                           <img
@@ -270,7 +270,7 @@ export const ProjectsPage: React.FC = () => {
                           />
                           <div>
                             <div className="text-xs font-bold text-white">{c.display_name}</div>
-                            <div className="text-[10px] text-gray-400">{c.department} • Year {c.year || 3}</div>
+                            <div className="text-[10px] text-[#888]">{c.department} • Year {c.year || 3}</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
@@ -278,15 +278,15 @@ export const ProjectsPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="text-xs text-gray-300 leading-relaxed bg-[#111827] rounded-lg p-2 border border-[#1F2937]">
-                        <span className="font-semibold text-indigo-300">Why they match: </span>
+                      <div className="text-xs text-gray-300 leading-relaxed bg-[#0A0A0A] rounded-lg p-2 border border-[#222]">
+                        <span className="font-semibold text-[#EDEDED]">Why they match: </span>
                         <span>{c.match_rationale}</span>
                       </div>
 
                       <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
                         <div className="flex flex-wrap gap-1 text-[10px]">
                           {c.matching_skills.map((s: string, idx: number) => (
-                            <span key={idx} className="rounded bg-indigo-500/15 text-indigo-300 px-1.5 py-0.5 border border-indigo-500/20">
+                            <span key={idx} className="rounded bg-[#111] text-[#EDEDED] px-1.5 py-0.5 border border-[#333]">
                               ✓ {s}
                             </span>
                           ))}
@@ -298,7 +298,7 @@ export const ProjectsPage: React.FC = () => {
                           className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm ${
                             invitedUsers.includes(c.user_id)
                               ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                              : 'bg-indigo-600 hover:bg-indigo-500 text-white'
+                              : 'bg-[#EDEDED] text-black hover:bg-white text-white'
                           }`}
                         >
                           {invitedUsers.includes(c.user_id) ? (
@@ -317,7 +317,7 @@ export const ProjectsPage: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-6 text-xs text-gray-400">
+                  <div className="text-center py-6 text-xs text-[#888]">
                     No matching student profiles found with specified skill filters.
                   </div>
                 )}
@@ -330,12 +330,12 @@ export const ProjectsPage: React.FC = () => {
       {/* Apply Modal */}
       {selectedProjectForApply && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-3xl bg-[#111827] border border-[#1F2937] p-6 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1F2937]">
+          <div className="w-full max-w-md rounded-sm bg-[#0A0A0A] border border-[#222] p-6 shadow-lg">
+            <div className="flex items-center justify-between pb-3 border-b border-[#222]">
               <h3 className="text-sm font-bold text-white">Join Project Team</h3>
               <button
                 onClick={() => setSelectedProjectForApply(null)}
-                className="rounded-lg p-1 text-gray-400 hover:text-white"
+                className="rounded-lg p-1 text-[#888] hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -349,37 +349,37 @@ export const ProjectsPage: React.FC = () => {
             ) : (
               <form onSubmit={handleApply} className="mt-4 space-y-3 text-xs">
                 <div>
-                  <label className="block text-gray-400 font-semibold mb-1">Applying for Role</label>
+                  <label className="block text-[#888] font-semibold mb-1">Applying for Role</label>
                   <input
                     type="text"
                     placeholder="e.g. AI/ML Engineer, UI/UX Designer, Hardware Lead..."
                     value={roleApplied}
                     onChange={(e) => setRoleApplied(e.target.value)}
                     required
-                    className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] p-2.5 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full rounded-sm bg-[#050505] border border-[#222] p-2.5 text-white focus:outline-none focus:border-[#444]"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-400 font-semibold mb-1">Introduction & Relevant Skills</label>
+                  <label className="block text-[#888] font-semibold mb-1">Introduction & Relevant Skills</label>
                   <textarea
                     rows={3}
                     placeholder="Briefly state your experience and why you'd like to collaborate..."
                     value={applyMessage}
                     onChange={(e) => setApplyMessage(e.target.value)}
-                    className="w-full rounded-xl bg-[#0B0F19] border border-[#1F2937] p-2.5 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full rounded-sm bg-[#050505] border border-[#222] p-2.5 text-white focus:outline-none focus:border-[#444]"
                   />
                 </div>
                 <div className="pt-2 flex justify-end gap-2">
                   <button
                     type="button"
                     onClick={() => setSelectedProjectForApply(null)}
-                    className="px-3 py-2 rounded-xl text-gray-400 hover:text-white"
+                    className="px-3 py-2 rounded-sm text-[#888] hover:text-white"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-4 py-2 font-bold text-white"
+                    className="rounded-sm bg-[#EDEDED] text-black hover:bg-white px-4 py-2 font-bold text-white"
                   >
                     Submit Request
                   </button>

@@ -82,7 +82,7 @@ export const Navbar: React.FC = () => {
             </button>
 
             {isDemoDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-sm bg-[#0A0A0A] border border-[#222] p-1.5 shadow-2xl z-50">
+              <div className="absolute right-0 mt-2 w-56 rounded-sm bg-[#0A0A0A] border border-[#222] p-1.5 shadow-lg z-50">
                 <div className="px-3 py-2 text-[10px] font-medium uppercase tracking-wider text-[#666] border-b border-[#222] mb-1">
                   Demo Switcher
                 </div>
@@ -164,7 +164,7 @@ export const Navbar: React.FC = () => {
             </button>
 
             {isProfileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-sm bg-[#0A0A0A] border border-[#222] p-1.5 shadow-2xl z-50">
+              <div className="absolute right-0 mt-2 w-48 rounded-sm bg-[#0A0A0A] border border-[#222] p-1.5 shadow-lg z-50">
                 <Link
                   to="/profile"
                   onClick={() => setIsProfileDropdownOpen(false)}

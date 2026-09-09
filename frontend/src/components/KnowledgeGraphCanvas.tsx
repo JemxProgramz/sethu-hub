@@ -154,28 +154,28 @@ export const KnowledgeGraphCanvas: React.FC<KnowledgeGraphCanvasProps> = ({ data
   };
 
   return (
-    <div className="relative w-full rounded-2xl bg-[#0B0F19] border border-[#1F2937] overflow-hidden p-2">
-      <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2 text-[10px] bg-[#111827]/80 backdrop-blur-md p-2 rounded-xl border border-[#1F2937]">
+    <div className="relative w-full rounded-sm bg-[#050505] border border-[#222] overflow-hidden p-2">
+      <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2 text-[10px] bg-[#0A0A0A]/80 backdrop-blur-md p-2 rounded-sm border border-[#222]">
         <span className="flex items-center gap-1 text-blue-400 font-semibold"><span className="h-2 w-2 rounded-full bg-blue-500" /> Student</span>
-        <span className="flex items-center gap-1 text-purple-400 font-semibold"><span className="h-2 w-2 rounded-full bg-purple-500" /> Community</span>
+        <span className="flex items-center gap-1 text-[#888] font-semibold"><span className="h-2 w-2 rounded-full bg-purple-500" /> Community</span>
         <span className="flex items-center gap-1 text-emerald-400 font-semibold"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Skill</span>
         <span className="flex items-center gap-1 text-amber-400 font-semibold"><span className="h-2 w-2 rounded-full bg-amber-500" /> Project</span>
         <span className="flex items-center gap-1 text-pink-400 font-semibold"><span className="h-2 w-2 rounded-full bg-pink-500" /> Topic</span>
       </div>
 
       {selectedNode && (
-        <div className="absolute top-4 right-4 z-20 w-64 rounded-2xl bg-[#111827]/95 border border-indigo-500/40 p-4 shadow-2xl backdrop-blur-md text-xs space-y-2">
+        <div className="absolute top-4 right-4 z-20 w-64 rounded-sm bg-[#0A0A0A]/95 border border-[#444] p-4 shadow-lg backdrop-blur-md text-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-indigo-300 uppercase tracking-wider text-[10px]">
+            <span className="font-bold text-[#EDEDED] uppercase tracking-wider text-[10px]">
               {selectedNode.type} Node Info
             </span>
-            <button onClick={() => setSelectedNode(null)} className="text-gray-400 hover:text-white">
+            <button onClick={() => setSelectedNode(null)} className="text-[#888] hover:text-white">
               <X className="h-4 w-4" />
             </button>
           </div>
-          <div className="font-extrabold text-sm text-white">{selectedNode.label}</div>
-          <div className="text-[11px] text-gray-400">Node ID: {selectedNode.id}</div>
-          <div className="pt-2 border-t border-[#1F2937] text-[10px] text-emerald-400 flex items-center gap-1">
+          <div className="font-semibold text-sm text-white">{selectedNode.label}</div>
+          <div className="text-[11px] text-[#888]">Node ID: {selectedNode.id}</div>
+          <div className="pt-2 border-t border-[#222] text-[10px] text-emerald-400 flex items-center gap-1">
             <Sparkles className="h-3 w-3" />
             <span>Connected in Sethu Knowledge Topology</span>
           </div>

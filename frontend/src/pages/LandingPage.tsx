@@ -57,7 +57,7 @@ export const LandingPage: React.FC = () => {
       {/* Product Showcase (Realistic UI representation) */}
       <section className="px-6 pb-32">
         <div className="mx-auto max-w-[1200px]">
-          <div className="w-full aspect-[16/10] sm:aspect-video rounded-lg border border-[#222] bg-[#0A0A0A] shadow-2xl overflow-hidden flex flex-col">
+          <div className="w-full aspect-[16/10] sm:aspect-video rounded-lg border border-[#222] bg-[#0A0A0A] shadow-lg overflow-hidden flex flex-col">
             {/* Fake Browser Header */}
             <div className="h-10 border-b border-[#222] flex items-center px-4 gap-2 bg-[#050505]">
               <div className="flex gap-1.5">
@@ -246,7 +246,7 @@ export const LandingPage: React.FC = () => {
           <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-40 grayscale">
              {/* Abstract minimalist logos built with divs to simulate actual client logos without using external SVGs */}
              <div className="flex items-center gap-2 font-mono font-bold text-lg"><Code className="w-6 h-6"/> CSE Dept</div>
-             <div className="flex items-center gap-2 font-sans font-black text-xl tracking-tighter"><Zap className="w-6 h-6 fill-current"/> EEE Hub</div>
+             <div className="flex items-center gap-2 font-sans font-semibold text-xl tracking-tighter"><Zap className="w-6 h-6 fill-current"/> EEE Hub</div>
              <div className="flex items-center gap-2 font-serif font-bold text-lg italic"><Briefcase className="w-6 h-6"/> M.B.A</div>
              <div className="flex items-center gap-2 font-sans font-semibold text-xl tracking-widest"><Terminal className="w-6 h-6"/> IT SOC</div>
           </div>

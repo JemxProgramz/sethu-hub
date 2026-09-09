@@ -8,11 +8,11 @@ export const MobileNav: React.FC = () => {
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `flex flex-col items-center gap-1 text-[10px] font-medium transition-colors ${
-      isActive ? 'text-indigo-400 font-bold' : 'text-gray-400 hover:text-gray-200'
+      isActive ? 'text-[#EDEDED] font-bold' : 'text-[#888] hover:text-gray-200'
     }`;
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B0F19]/95 border-t border-[#1F2937] backdrop-blur-lg py-2.5 px-4 shadow-2xl">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#050505]/95 border-t border-[#222] backdrop-blur-lg py-2.5 px-4 shadow-lg">
       <div className="flex items-center justify-around max-w-md mx-auto">
         <NavLink to="/home" className={navClass}>
           <Home className="h-5 w-5" />
@@ -30,7 +30,7 @@ export const MobileNav: React.FC = () => {
         </NavLink>
 
         <NavLink to="/ask-ai" className={navClass}>
-          <Sparkles className="h-5 w-5 text-purple-400" />
+          <Sparkles className="h-5 w-5 text-[#888]" />
           <span>Ask AI</span>
         </NavLink>
 
